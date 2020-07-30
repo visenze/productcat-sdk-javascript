@@ -1,7 +1,7 @@
 {
-  "name": "visearch-javascript-sdk",
-  "version": "1.5.2",
-  "description": "JavaScript SDK for ViSearch of visenze.com",
+  "name": "productcat-javascript-sdk",
+  "version": "1.0.0",
+  "description": "JavaScript SDK for productcat of visenze.com",
   "main": "./js/index.js",
   "scripts": {
     "eslint": "eslint *.js js/*.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/visenze/visearch-sdk-javascript.git"
+    "url": "https://github.com/visenze/productcat-sdk-javascript.git"
   },
   "author": "dejun@visenze.com",
   "license": "MIT",

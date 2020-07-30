@@ -23,9 +23,8 @@ JavaScript SDK for Productcat
 
 Productcat is an API that provides accurate, reliable and scalable image search.  Productcat API can be easily integrated into your web and mobile applications. For more details, see [Productcat API Documentation](http://developers.visenze.com/api/).
 
-The Productcat JavaScript SDK is an open source software for easy integration of ViSearch Search API with your application server. For source code and references, visit the [GitHub repository](https://github.com/visenze/productcat-sdk-javascript.git).
+The Productcat JavaScript SDK is an open source software for easy integration of Productcat Search API with your application server. For source code and references, visit the [GitHub repository](https://github.com/visenze/productcat-sdk-javascript.git).
 
-- Latest stable version: ![npm version](https://img.shields.io/npm/v/visearch-javascript-sdk.svg?style=flat)
 
 ## 2. Setup and initialization
 
@@ -182,7 +181,7 @@ productcat.productdetails("YOUR_PID", {
 
 ## 4. Search Results
 
-ViSearch returns a maximum number of 100 most relevant image search results. You can provide pagination parameters to control the paging of the image search results.
+productcat returns a maximum number of 100 most relevant image search results. You can provide pagination parameters to control the paging of the image search results.
 
 Pagination parameters:
 

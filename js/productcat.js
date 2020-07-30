@@ -5,12 +5,13 @@
  * @author dejun@visenze.com
  */
 (function (context) {
-  const fetch = typeof window === 'undefined' ? require('node-fetch') : window.fetch;
+  const fetch = window.fetch;
   const {
     isObject, isFunction, extend, find, isArray,
   } = require('lodash/core');
   const URI = require('jsuri');
   const FormData = require('form-data');
+
 
   if (typeof module === 'undefined' || !module.exports) {
     // For non-Node environments
@@ -41,6 +42,13 @@
     return uuid;
   }
 
+
+  function getEndPoint(params) {
+    if (settings.endpoint) {
+      return settings.endpoint;
+    }
+    return params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
+  }
 
   // *********************************************
   // Global constants
@@ -169,14 +177,13 @@
    * Sends a GET request.
    */
   const sendGetRequest = (path, params, options, callback, failure) => {
-    const endpoint = params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
+    const endpoint = getEndPoint(params);
     params.cid =settings.cid;
-    params.uid =settings.uid || generateUUID();
+    params.uid =settings.uid;
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParams(params)
       .toString();
-
     const fetchObj = fetch(url, {
       method: 'GET',
       headers: getHeaders(),
@@ -188,8 +195,8 @@
    * Sends a POST request.
    */
   const sendPostRequest = (path, params, options, callback, failure) => {
-    const endpoint = params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
-    params.uid = settings.uid || generateUUID();
+    const endpoint = getEndPoint(params);
+    params.uid = settings.uid;
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParam("app_key", settings.app_key)
@@ -245,9 +252,7 @@
   }
 
 
-
   // Monitor the push event from outside
-
   $productcat.q = $productcat.q || [];
   $productcat.q.push = function (command) {
     applyPrototypesCall(command);
@@ -284,10 +289,6 @@
     }
   }
 
-  // Export for Node module
-  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = $productcat;
-  }
 
   // Fix Lodash object leaking to window due to Webpack issue
   // Reference: https://github.com/webpack/webpack/issues/4465

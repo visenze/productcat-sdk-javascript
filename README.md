@@ -1,7 +1,5 @@
 ## productcat-javascript-sdk
 
-[![npm version](https://img.shields.io/npm/v/visearch-javascript-sdk.svg?style=flat)](https://www.npmjs.com/package/visearch-javascript-sdk)
-
 JavaScript SDK for Productcat
 
 ----
@@ -47,36 +45,12 @@ This snippet will load `productcat.js` onto the page asynchronously, so it will 
 please contact Visenze to get YOUR_APP_KEY and YOUR_CID to put in the field.
 
 
-For usage with Node.js projects:
-
-```sh
-npm install productcat-javascript-sdk
-```
-
-```js
-// Import module
-import productcat from 'productcat-javascript-sdk';
-
-// Set up keys
-productcat.set('app_key', 'APP_KEY');
-productcat.set('cid', "CID")
-productcat.set('country', "SG"); // highly recommend, put the country code in the setting can tell productcat only retrun the product available in this country
-productcat.set('timeout', 2000); // optional default is 15000
-
-
-```
 
 ### 2.1 Run the Demo
 
 This repository comes with an example of the SDK usage. In order to run the examples, a Node.js environment is required.
 
 You will need to fill up your app keys in the relevant demo files.
-
-To run the Node.js demo:
-
-```sh
-node testSDK
-```
 
 To run the web page demo:
 

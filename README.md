@@ -12,6 +12,7 @@ JavaScript SDK for Productcat
    1. [Selection Box](#311-selection-box)
    1. [Similar product](#32-similar-product)   
    1. [Product details](#33-product-details)
+   1. [Search Result Page](34-search-result-page)
 1. [Search Results](#4-search-results)
 1. [Advanced Search Parameters](#5-advanced-search-parameters)
    1. [Retrieving facets](#51-retrieving-metadata)
@@ -47,7 +48,7 @@ you can also other parameters with the productcat.set method, like country, cust
 productcat.set('app_key', 'YOUR_APP_KEY'); // required
 productcat.set('cid', "YOUR_CID"); // required.
 
-// highly recommended, set the default country code search products.
+// highly recommended, set the default country code to search products.
 // visenze will return product only for this country instead of global database when this parameter is set.
 // Note that if country field is set in the request parameter, it will override the default country code
 productcat.set('country', "SG")

@@ -42,10 +42,10 @@ For usage within a web page, paste the following snippet into the header of your
 This snippet will load `productcat.js` onto the page asynchronously, so it will not affect your page load speed.
 
 productcat client must be initialized with app_key and cid before use. Call productcat.set(key, value) method to set the parameters,
-you can also other parameters with the productcat.set method, like country, customized endpoint and timeout.
+you can also set other parameters with the productcat.set method, like country, customized endpoint and timeout.
 
 ```js
-productcat.set('app_key', 'YOUR_APP_KEY'); // required
+productcat.set('app_key', 'YOUR_APP_KEY'); // required.
 productcat.set('cid', "YOUR_CID"); // required.
 
 // highly recommended, set the default country code to search products.
@@ -195,8 +195,10 @@ productcat.productdetails({
   console.error(err)
 })
 ```
+
 ### 3.4 Search Result Page
 **Search Result Page** The Search Result API returns a web url to display the content of the searched result in a browser.
+
 ```js
 productcat.searchresult({
   im_url: 'your-image-url',

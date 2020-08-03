@@ -23,7 +23,8 @@
       'set',
       'similarproducts',
       'productsummary',
-      'productdetails'
+      'productdetails',
+      'searchresult'
     ];
     // For each of our methods, generate a queueing stub.
     for (var i = 0; i < __productcat_obj.methods.length; i++) {

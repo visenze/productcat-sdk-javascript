@@ -5,12 +5,13 @@
  * @author dejun@visenze.com
  */
 (function (context) {
-  const fetch = typeof window === 'undefined' ? require('node-fetch') : window.fetch;
+  const fetch = window.fetch;
   const {
     isObject, isFunction, extend, find, isArray,
   } = require('lodash/core');
   const URI = require('jsuri');
   const FormData = require('form-data');
+
 
   if (typeof module === 'undefined' || !module.exports) {
     // For non-Node environments
@@ -41,6 +42,35 @@
     return uuid;
   }
 
+
+  function getEndPoint(params) {
+    if (settings.endpoint) {
+      return settings.endpoint;
+    }
+    return params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
+  }
+
+  function mergeSetting(params) {
+    if(params.country === undefined) {
+      if(settings.country) {
+        params.country = settings.country;
+      }
+    }
+    if(params.uid === undefined) {
+      params.uid =settings.uid;
+    }
+    return params;
+  }
+
+  function getPIDUrl(path, params) {
+    if(params.pid === undefined) {
+      console.error("must set pid in parameter")
+      return
+    }
+    path = `${path}/${params.pid}`;
+    delete params.pid;
+    return path;
+  }
 
   // *********************************************
   // Global constants
@@ -169,9 +199,9 @@
    * Sends a GET request.
    */
   const sendGetRequest = (path, params, options, callback, failure) => {
-    const endpoint = params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
+    params = mergeSetting(params);
     params.cid =settings.cid;
-    params.uid =settings.uid || generateUUID();
+    const endpoint = getEndPoint(params);
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParams(params)
@@ -188,8 +218,8 @@
    * Sends a POST request.
    */
   const sendPostRequest = (path, params, options, callback, failure) => {
-    const endpoint = params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
-    params.uid = settings.uid || generateUUID();
+    params = mergeSetting(params);
+    const endpoint = getEndPoint(params);
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParam("app_key", settings.app_key)
@@ -229,25 +259,30 @@
     return sendRequest(fetchObj, path, options, callback, failure);
   };
 
+  prototypes.searchresult = function(params, options, callback, failure) {
+    return sendPostRequest('summary/products/srp', params, options, callback, failure);
+  }
 
   prototypes.productsummary = function(params, options, callback, failure) {
     return sendPostRequest('summary/products', params, options, callback, failure);
   }
 
-  prototypes.similarproducts = function(pid, params, options, callback, failure) {
-    const path = `similar/products/${pid}`;
-    return sendGetRequest(path, params, options, callback, failure);
+  prototypes.similarproducts = function(params, options, callback, failure) {
+    const path = getPIDUrl('similar/products', params);
+    if(path) {
+      return sendGetRequest(path, params, options, callback, failure);
+    }
   };
 
-  prototypes.productdetails = function(pid, params, options, callback, failure) {
-    const path = `products/${pid}`;
-    return sendGetRequest(path, params, options, callback, failure);
+  prototypes.productdetails = function(params, options, callback, failure) {
+    const path = getPIDUrl('products', params);
+    if(path) {
+      return sendGetRequest(path, params, options, callback, failure);
+    }
   }
 
 
-
   // Monitor the push event from outside
-
   $productcat.q = $productcat.q || [];
   $productcat.q.push = function (command) {
     applyPrototypesCall(command);
@@ -284,10 +319,6 @@
     }
   }
 
-  // Export for Node module
-  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = $productcat;
-  }
 
   // Fix Lodash object leaking to window due to Webpack issue
   // Reference: https://github.com/webpack/webpack/issues/4465

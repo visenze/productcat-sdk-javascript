@@ -11,6 +11,7 @@ JavaScript SDK for Productcat
    1. [Search by Image](#31-search-by-image)
    1. [Selection Box](#311-selection-box)
    1. [Similar product](#32-similar-product)   
+   1. [Product details](#33-product-details)
 1. [Search Results](#4-search-results)
 1. [Advanced Search Parameters](#5-advanced-search-parameters)
    1. [Retrieving facets](#51-retrieving-metadata)
@@ -32,17 +33,30 @@ For usage within a web page, paste the following snippet into the header of your
 
 ```html
 <script type="text/javascript">
-!function(t,r,e,a){t.__productcat_obj=a;var c=t[a]=t[a]||{};c.q=c.q||[],c.factory=function(r){return function(){var t=Array.prototype.slice.call(arguments);return t.unshift(r),c.q.push(t),c}},c.methods=["set","similarproducts","productsummary","productdetails"];for(var o=0;o<c.methods.length;o++){var s=c.methods[o];c[s]=c.factory(s)}var n=r.createElement(e);n.type="text/javascript",n.async=!0,n.src="../dist/js/productcat.js";var u=r.getElementsByTagName(e)[0];u.parentNode.insertBefore(n,u)}(window,document,"script","productcat");
+!function(t,r,e,a){t.__productcat_obj=a;var c=t[a]=t[a]||{};c.q=c.q||[],c.factory=function(r){return function(){var t=Array.prototype.slice.call(arguments);return t.unshift(r),c.q.push(t),c}},c.methods=["set","similarproducts","productsummary","productdetails","searchresult"];for(var o=0;o<c.methods.length;o++){var s=c.methods[o];c[s]=c.factory(s)}var n=r.createElement(e);n.type="text/javascript",n.async=!0,n.src="../dist/js/productcat.js";var u=r.getElementsByTagName(e)[0];u.parentNode.insertBefore(n,u)}(window,document,"script","productcat");
 
-productcat.set('app_key', 'YOUR_APP_KEY');
-productcat.set('cid', "YOUR_CID")
 </script>
 ```
 
 This snippet will load `productcat.js` onto the page asynchronously, so it will not affect your page load speed.
 
-please contact Visenze to get YOUR_APP_KEY and YOUR_CID to put in the field.
+productcat client must be initialized with app_key and cid before use. Call productcat.set(key, value) method to set the parameters,
+you can also other parameters with the productcat.set method, like country, customized endpoint and timeout.
 
+```js
+productcat.set('app_key', 'YOUR_APP_KEY'); // required
+productcat.set('cid', "YOUR_CID"); // required.
+
+// highly recommended, set the default country code search products.
+// visenze will return product only for this country instead of global database when this parameter is set.
+// Note that if country field is set in the request parameter, it will override the default country code
+productcat.set('country', "SG")
+
+productcat.set('timeout', 2000); // optional, this parameter set the api timeout value in ms. if not set, default timeout is 15000
+productcat.set('endpoint', "https://test.com/") //optional, this parameter set the customized endpoint to end request.
+```
+
+please contact Visenze to get YOUR_APP_KEY and YOUR_CID to put in the field.
 
 
 ### 2.1 Run the Demo
@@ -157,7 +171,8 @@ Note: if the box coordinates are invalid (negative or exceeding the image bounda
 **Similar Products** solution is to search for visually similar images in the same store giving a product id (PID).
 
 ```js
-productcat.similarproducts("YOUR_PID", {
+productcat.similarproducts({
+  pid: "YOUR_PID",
   country: "SG",
   limit: 10
 }, (res) => {
@@ -168,9 +183,10 @@ productcat.similarproducts("YOUR_PID", {
 ```
 
 ### 3.3 Product details
-**Product detaisl** will return the details about a product given a product id (PID)
+**Product details** will return the details about a product given a product id (PID)
 ```js
-productcat.productdetails("YOUR_PID", {
+productcat.productdetails({
+  pid: "YOUR_PID",  
   country: "SG",
 }, res => {
   console.log(res)
@@ -178,6 +194,18 @@ productcat.productdetails("YOUR_PID", {
   console.error(err)
 })
 ```
+### 3.4 Search Result Page
+**Search Result Page** The Search Result API returns a web url to display the content of the searched result in a browser.
+```js
+productcat.searchresult({
+  im_url: 'your-image-url',
+}, (res) => {
+  // TODO handle response
+}, (err) => {
+  // TODO handle error
+});
+```
+
 
 ## 4. Search Results
 

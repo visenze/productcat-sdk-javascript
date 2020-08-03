@@ -50,6 +50,28 @@
     return params.country == "CN" ? CN_SERVER_URL : SERVER_URL;
   }
 
+  function mergeSetting(params) {
+    if(params.country === undefined) {
+      if(settings.country) {
+        params.country = settings.country;
+      }
+    }
+    if(params.uid === undefined) {
+      params.uid =settings.uid;
+    }
+    return params;
+  }
+
+  function getPIDUrl(path, params) {
+    if(params.pid === undefined) {
+      console.error("must set pid in parameter")
+      return
+    }
+    path = `${path}/${params.pid}`;
+    delete params.pid;
+    return path;
+  }
+
   // *********************************************
   // Global constants
   // *********************************************
@@ -177,13 +199,14 @@
    * Sends a GET request.
    */
   const sendGetRequest = (path, params, options, callback, failure) => {
-    const endpoint = getEndPoint(params);
+    params = mergeSetting(params);
     params.cid =settings.cid;
-    params.uid =settings.uid;
+    const endpoint = getEndPoint(params);
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParams(params)
       .toString();
+
     const fetchObj = fetch(url, {
       method: 'GET',
       headers: getHeaders(),
@@ -195,8 +218,8 @@
    * Sends a POST request.
    */
   const sendPostRequest = (path, params, options, callback, failure) => {
+    params = mergeSetting(params);
     const endpoint = getEndPoint(params);
-    params.uid = settings.uid;
     const url = new URI(endpoint)
       .setPath(path)
       .addQueryParam("app_key", settings.app_key)
@@ -236,19 +259,26 @@
     return sendRequest(fetchObj, path, options, callback, failure);
   };
 
+  prototypes.searchresult = function(params, options, callback, failure) {
+    return sendPostRequest('summary/products/srp', params, options, callback, failure);
+  }
 
   prototypes.productsummary = function(params, options, callback, failure) {
     return sendPostRequest('summary/products', params, options, callback, failure);
   }
 
-  prototypes.similarproducts = function(pid, params, options, callback, failure) {
-    const path = `similar/products/${pid}`;
-    return sendGetRequest(path, params, options, callback, failure);
+  prototypes.similarproducts = function(params, options, callback, failure) {
+    const path = getPIDUrl('similar/products', params);
+    if(path) {
+      return sendGetRequest(path, params, options, callback, failure);
+    }
   };
 
-  prototypes.productdetails = function(pid, params, options, callback, failure) {
-    const path = `products/${pid}`;
-    return sendGetRequest(path, params, options, callback, failure);
+  prototypes.productdetails = function(params, options, callback, failure) {
+    const path = getPIDUrl('products', params);
+    if(path) {
+      return sendGetRequest(path, params, options, callback, failure);
+    }
   }
 
 

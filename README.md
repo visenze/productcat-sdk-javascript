@@ -34,7 +34,7 @@ For usage within a web page, paste the following snippet into the header of your
 
 ```html
 <script type="text/javascript">
-!function(t,r,e,a){t.__productcat_obj=a;var c=t[a]=t[a]||{};c.q=c.q||[],c.factory=function(r){return function(){var t=Array.prototype.slice.call(arguments);return t.unshift(r),c.q.push(t),c}},c.methods=["set","similarproducts","productsummary","productdetails","searchresult"];for(var o=0;o<c.methods.length;o++){var s=c.methods[o];c[s]=c.factory(s)}var n=r.createElement(e);n.type="text/javascript",n.async=!0,n.src="../dist/js/productcat.js";var u=r.getElementsByTagName(e)[0];u.parentNode.insertBefore(n,u)}(window,document,"script","productcat");
+!function(t,r,e,c){t.__productcat_obj=c;var a=t[c]=t[c]||{};a.q=a.q||[],a.factory=function(r){return function(){var t=Array.prototype.slice.call(arguments);return t.unshift(r),a.q.push(t),a}},a.methods=["set","similarproducts","productsummary","productdetails","searchresult"];for(var o=0;o<a.methods.length;o++){var s=a.methods[o];a[s]=a.factory(s)}var n=r.createElement(e);n.type="text/javascript",n.async=!0,n.src="http://cdn.visenze.com/productcat/dist/js/productcat-1.0.0.min.js";var u=r.getElementsByTagName(e)[0];u.parentNode.insertBefore(n,u)}(window,document,"script","productcat");
 
 </script>
 ```

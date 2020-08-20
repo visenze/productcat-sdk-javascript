@@ -24,6 +24,7 @@
       'similarproducts',
       'productsummary',
       'productdetails',
+      'multipleproducts',
       'searchresult'
     ];
     // For each of our methods, generate a queueing stub.
@@ -39,4 +40,4 @@
     el.src = src;
     var m = doc.getElementsByTagName(element)[0];
     m.parentNode.insertBefore(el, m);
-})(window, document, 'script', '../dist/js/productcat.js', 'productcat');
+})(window, document, 'script', 'http://cdn.visenze.com/productcat/dist/js/productcat-1.0.1.min.js', 'productcat');

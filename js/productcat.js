@@ -267,6 +267,10 @@
     return sendPostRequest('summary/products', params, options, callback, failure);
   }
 
+  prototypes.multipleproducts = function(params, options, callback, failure) {
+    return sendPostRequest('mps/products', params, options, callback, failure)
+  }
+
   prototypes.similarproducts = function(params, options, callback, failure) {
     const path = getPIDUrl('similar/products', params);
     if(path) {

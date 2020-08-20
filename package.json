@@ -1,6 +1,6 @@
 {
   "name": "productcat-javascript-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript SDK for productcat of visenze.com",
   "main": "./js/index.js",
   "scripts": {

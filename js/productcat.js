@@ -11,6 +11,7 @@
   } = require('lodash/core');
   const URI = require('jsuri');
   const FormData = require('form-data');
+  const va = require('visenze-tracking-javascript') 
 
 
   if (typeof module === 'undefined' || !module.exports) {
@@ -127,6 +128,8 @@
   // Use prototypes to define all internal methods
   const prototypes = {};
 
+  let tracker; 
+
   // Config settings
   prototypes.set = function () {
     if (arguments.length === 2) {
@@ -185,6 +188,8 @@
       .then((json) => {
         const stop = new Date().getTime();
         console.log(`productcat ${path} finished in ${stop - start}ms`);
+
+        sendEvent(path, json)
         callback(json);
       })
       .catch((ex) => {
@@ -194,6 +199,26 @@
         }
       });
   };
+
+  const sendEvent = (path, response) => {
+    if(settings.tracker_code) {
+      if(!tracker){ 
+        console.log("init tracker");
+        console.log("uid: ", settings.uid)
+        tracker = va.init({code: settings.tracker_code, uid: settings.uid})
+      }      
+
+      if(path === "summary/products" || path === "summary/products/srp" || path === "mps/products") {
+        tracker.sendEvent("search", {
+          name: "testSearch",
+          queryId: response.reqid
+        }, err => {
+          console.log("send test search failed")
+        })
+      }
+    }
+
+  }
 
   /**
    * Sends a GET request.
